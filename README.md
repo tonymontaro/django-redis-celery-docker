@@ -5,7 +5,7 @@
 #### Letter Digit
 
 * **GET /letter_digits/** (lists stored Letter Digit permutation results)
-* **POST /letter_digits/** (data={string: abC}, processes the string and returns a result)
+* **POST /letter_digits/** (data={string: abC}, processes the string and returns the result. If the number of characters is too many, then run task in the background and return a url that can be used to get completed result.)
 * **GET /letter_digits/id** (get result by Id)
 
 
@@ -33,6 +33,9 @@
 
 - User Birthday API: **http://127.0.0.1:8000/user_birthdays/**
 
+
+### Test
+- Tests get executed and logged to the console when **docker-compose up** is run.
 
 ### Credits
 
