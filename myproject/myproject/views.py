@@ -25,14 +25,12 @@ class LetterDigitViewSet(
 
     def post(self, request):
         string = request.data.get('string').lower()
-        result_from_cache = cache.get(string)
+        result_from_cache = cache.get(string, version=1)
         if result_from_cache:
             return Response(result_from_cache)
 
         result = self.get_from_db_or_generate(string, request)
-        cache_res = dict(result)
-        del cache_res['url']
-        cache.set(string, cache_res, None)
+        cache.set(string, {k: v for k, v in result.items() if k != 'url'}, None, version=1)
         return Response(result)
 
     def get_from_db_or_generate(self, string, request):
