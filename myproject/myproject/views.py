@@ -34,14 +34,17 @@ class LetterDigitViewSet(
         return Response(result)
 
     def get_from_db_or_generate(self, string, request):
-        result = LetterDigit.objects.filter(string=string)
-        if result:
-            result = result[0]
-        else:
-            result = LetterDigit(string=string)
-            result.save()
-        result = LetterDigitSerializer(result, context={'request': request})
-        data = result.data
+        try:
+            result = LetterDigit.objects.filter(string=string)
+            if result:
+                result = result[0]
+            else:
+                result = LetterDigit(string=string)
+                result.save()
+            result = LetterDigitSerializer(result, context={'request': request})
+            data = result.data
+        except Exception as e:
+            data = {'errors': [str(e)]}
         return data
 
 

@@ -32,6 +32,8 @@ class LetterDigit(models.Model):
                 self.result = get_lettercase_permutation(self.string)
                 self.status = 'finished'
                 self.save()
+            elif alphas > 27:
+                raise Exception("This will generate more 260 million different permutations. Please don't crash my server.")
             else:
                 from .tasks import lettercase_permutation_task
                 lettercase_permutation_task.delay(job_id=self.id, string=self.string)
