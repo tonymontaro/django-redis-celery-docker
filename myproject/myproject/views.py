@@ -30,7 +30,9 @@ class LetterDigitViewSet(
             return Response(result_from_cache)
 
         result = self.get_from_db_or_generate(string, request)
-        cache.set(string, result, None)
+        cache_res = dict(result)
+        del cache_res['url']
+        cache.set(string, cache_res, None)
         return Response(result)
 
     def get_from_db_or_generate(self, string, request):
@@ -42,7 +44,6 @@ class LetterDigitViewSet(
             result.save()
         result = LetterDigitSerializer(result, context={'request': request})
         data = result.data
-        del data['url']
         return data
 
 
